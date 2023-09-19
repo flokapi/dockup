@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "dockup"
+version = "0.0.4"
+description = "Publish multiple docker containers using nginx"
+authors = ["flokapi <flokapi@pm.me>"]
+license = "GPL V3"
+readme = "README.md"
+
+packages = [
+    { include = "dockup", from = "src" },
+]
+
+[tool.poetry.urls]
+homepage = "https://github.com/flokapi/dockup"
+repository = "https://github.com/flokapi/dockup"
+documentation = "https://github.com/flokapi/dockup"
+
+[tool.poetry.dependencies]
+pyyaml = "*"
+python = "^3.7"
+platformdirs = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
+float_to_top = true

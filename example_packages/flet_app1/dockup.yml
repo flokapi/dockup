@@ -1,0 +1,4 @@
+name: flet_app1
+path: app1
+proxy_cfg: flet
+docker_file: python_std
