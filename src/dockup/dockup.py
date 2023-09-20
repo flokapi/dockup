@@ -24,7 +24,7 @@ def _prepareArchive(target):
         shutil.make_archive(target, 'gztar', base_dir=target)
         return target, f'{target}.tar.gz'
     else:
-        return Path(target).stem, target
+        return Path(target).name.split('.')[0], target
 
 
 def install(target):

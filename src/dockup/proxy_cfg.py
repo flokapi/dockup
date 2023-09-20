@@ -3,8 +3,8 @@ from . import config
 
 
 NGINX_CFG = {
-    'default': '''
-        location /{path}/ {{
+    'website': '''
+        location {path}/ {{
             proxy_pass         http://{name}/;
             proxy_http_version 1.1;
             proxy_set_header   Upgrade $http_upgrade;
@@ -16,7 +16,7 @@ NGINX_CFG = {
         }}
         ''',
     'flet': '''
-        location /{path}/ {{
+        location {path}/ {{
             proxy_pass         http://{name}/;
             proxy_http_version 1.1;
             proxy_set_header   Upgrade $http_upgrade;
@@ -27,7 +27,7 @@ NGINX_CFG = {
             proxy_set_header   X-Forwarded-Proto $scheme;
         }}
 
-        location /{path}/ws {{
+        location {path}/ws {{
             proxy_pass         http://{name}/ws;
             proxy_http_version 1.1;
             proxy_set_header   Upgrade $http_upgrade;
@@ -46,10 +46,10 @@ def _getProxyCfgPath(target):
 
 
 def _getCfgType(packageCfg):
-    if 'proxy_cfg' in packageCfg.keys():
-        return packageCfg['proxy_cfg']
+    if 'type' in packageCfg.keys():
+        return packageCfg['type']
     else:
-        return 'default'
+        return None
 
 
 def makeConfig(target):
@@ -60,6 +60,10 @@ def makeConfig(target):
 
     packageCfg = config.getPackageCfg(target)
     cfgType = _getCfgType(packageCfg)
+
+    if cfgType not in NGINX_CFG:
+        print(f'Nginx config not defined for type: {cfgType}')
+        exit()
 
     with open(proxyCfgPath, 'w') as f:
         for line in NGINX_CFG[cfgType].split('\n'):

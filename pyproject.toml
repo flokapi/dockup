@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dockup"
-version = "0.0.4"
+version = "0.0.9"
 description = "Publish multiple docker containers using nginx"
 authors = ["flokapi <flokapi@pm.me>"]
 license = "GPL V3"

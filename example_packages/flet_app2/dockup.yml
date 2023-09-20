@@ -1,4 +1,3 @@
-name: "flet_app2"
-path: "app2"
-proxy_cfg: flet
-docker_file: python_std
+name: flet_app2
+path: /app2
+type: flet

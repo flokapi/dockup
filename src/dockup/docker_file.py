@@ -3,7 +3,12 @@ from . import config
 
 
 DOCKER_CFG = {
-    'python':  '''
+    'website': '''
+        FROM nginx:latest
+
+        COPY . /usr/share/nginx/html
+    ''',
+    'flet':  '''
         ARG PYTHON_VERSION=3.11.4
         FROM python:${{PYTHON_VERSION}}-alpine as base
 
@@ -15,8 +20,6 @@ DOCKER_CFG = {
             
         COPY . .
 
-        EXPOSE 80
-
         CMD uvicorn 'main:app' --host=0.0.0.0 --port=80
         '''
 }
@@ -27,10 +30,10 @@ def _getDockerFilePath(target):
 
 
 def _getCfgType(packageCfg):
-    if 'docker_file' in packageCfg.keys():
-        return packageCfg['docker_file']
+    if 'type' in packageCfg.keys():
+        return packageCfg['type']
     else:
-        return 'python'
+        return None
 
 
 def makeDockerFile(target):
@@ -41,6 +44,10 @@ def makeDockerFile(target):
 
     packageCfg = config.getPackageCfg(target)
     cfgType = _getCfgType(packageCfg)
+
+    if cfgType not in DOCKER_CFG:
+        print(f'Docker file not defined for type: {cfgType}')
+        exit()
 
     with open(dockerFilePath, 'w') as f:
         for line in DOCKER_CFG[cfgType].split('\n'):

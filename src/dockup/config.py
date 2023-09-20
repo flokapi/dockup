@@ -13,7 +13,7 @@ CONFIG_PATH = APP_PATH.joinpath(CONFIG_NAME)
 
 
 def init():
-    APP_PATH.mkdir(parents=False, exist_ok=True)
+    APP_PATH.mkdir(parents=True, exist_ok=True)
     CONFIG_PATH.touch()
 
 
