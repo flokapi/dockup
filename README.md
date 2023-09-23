@@ -86,7 +86,7 @@ dockup.down()
 dockup.reset()
 dockup.set_proxy('./reverse_proxy_http.tar.gz')
 dockup.add('flet_app1.tar.gz')
-build_nodes()
+dockup.add('flet_app2.tar.gz')
 dockup.up()
 ```
 
