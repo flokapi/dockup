@@ -1,5 +1,3 @@
-# Dockup
-
 Dockup is a command line interface tool which allows to easily publish applications at a given path through docker containers and nginx.
 
 A Dockup package is a compressed file containing:
@@ -32,7 +30,7 @@ The nginx reverse proxy used by Dockup is also installed as Dockup package. This
 
 
 
-### Installation
+# Installation
 
 First of all install the docker engine: https://docs.docker.com/engine/install/
 
@@ -44,14 +42,16 @@ pip3 install dockup
 
 
 
-### Usage
+# Usage
+
+### As a command line tool
 
 Install the proxy Package
 
 - given that your reverse proxy package is located in your current working directory
 - you can prepare the reverse proxy package according to you needs:
     - [reverse_proxy_http](https://github.com/flokapi/dockup/tree/main/example_packages/reverse_proxy_http) is an example of simple HTTP proxy (not configured for HTTPS)
-- you can also specify the package as an archive if it is present in you working directory.
+- you can also specify the package as an archive if it is present in your working directory.
 
 ```
 python3 -m dockup installproxy reverse_proxy_http
@@ -76,4 +76,17 @@ python3 -m dockup uninstall flet_app1
 ```
 
 
+
+### As a python package
+
+```python
+import dockup
+
+dockup.down()
+dockup.reset()
+dockup.set_proxy('./reverse_proxy_http.tar.gz')
+dockup.add('flet_app1.tar.gz')
+build_nodes()
+dockup.up()
+```
 

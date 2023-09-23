@@ -8,7 +8,21 @@ DOCKER_CFG = {
 
         COPY . /usr/share/nginx/html
     ''',
-    'flet':  '''
+    'flet': '''
+        ARG PYTHON_VERSION=3.11.4
+        FROM python:${{PYTHON_VERSION}}-alpine as base
+
+        WORKDIR /app
+
+        COPY requirements.txt ./
+
+        RUN pip install -r requirements.txt
+            
+        COPY . .
+
+        CMD uvicorn 'main:app' --host=0.0.0.0 --port=80
+        ''',
+    'flet_abs': '''
         ARG PYTHON_VERSION=3.11.4
         FROM python:${{PYTHON_VERSION}}-alpine as base
 

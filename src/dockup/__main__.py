@@ -24,7 +24,7 @@ def main():
     elif cmd.action == 'uninstall':
         dockup.uninstall(cmd.target)
     elif cmd.action == 'installproxy':
-        dockup.installProxy(cmd.target)
+        dockup.install_proxy(cmd.target)
     else:
         print('Unknown command')
 

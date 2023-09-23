@@ -3,20 +3,10 @@ import os
 from pathlib import Path
 
 
-from . import docker_compose
-from . import docker_file
-from . import proxy_cfg
-from . import config
-
-
-def _init():
-    docker_compose.run(['stop'])
-
-
-def _end():
-    docker_compose.buildFile()
-    docker_compose.run(['build'])
-    docker_compose.run(['up', '-d', '--remove-orphans'])
+from dockup import docker_compose
+from dockup import docker_file
+from dockup import proxy_cfg
+from dockup import config
 
 
 def _prepareArchive(target):
@@ -27,8 +17,22 @@ def _prepareArchive(target):
         return Path(target).name.split('.')[0], target
 
 
-def install(target):
-    _init()
+def reset():
+    shutil.rmtree(config.APP_PATH, ignore_errors=True)
+    config.APP_PATH.mkdir()
+
+
+def down():
+    docker_compose.run(['down'])
+
+
+def up():
+    docker_compose.buildFile()
+    docker_compose.run(['build'])
+    docker_compose.run(['up', '-d', '--remove-orphans'])
+
+
+def add(target):
     target, filePath = _prepareArchive(target)
     if os.path.isfile(filePath):
         dstPath = config.APP_PATH.joinpath(target)
@@ -36,11 +40,14 @@ def install(target):
         shutil.unpack_archive(filePath, config.APP_PATH)
         docker_file.makeDockerFile(target)
         proxy_cfg.makeConfig(target)
-    _end()
 
 
-def installProxy(target):
-    _init()
+def remove(target):
+    targetPath = config.APP_PATH.joinpath(target)
+    shutil.rmtree(targetPath)
+
+
+def set_proxy(target):
     target, filePath = _prepareArchive(target)
     if os.path.isfile(filePath):
         tmpPath = config.APP_PATH.joinpath(target)
@@ -49,12 +56,21 @@ def installProxy(target):
         shutil.rmtree(tmpPath, ignore_errors=True)
         shutil.unpack_archive(filePath, config.APP_PATH)
         shutil.move(tmpPath, dstPath)
-    _end()
+
+
+def install(target):
+    down()
+    add(target)
+    up()
+
+
+def install_proxy(target):
+    down()
+    set_proxy(target)
+    up()
 
 
 def uninstall(target):
-    _init()
-    targetPath = config.APP_PATH.joinpath(target)
-    print(targetPath)
-    shutil.rmtree(targetPath)
-    _end()
+    down()
+    remove(target)
+    up()
