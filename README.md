@@ -1,13 +1,13 @@
 # About
 
-Dockup is a command line interface tool which allows to easily publish applications at a given path through docker containers and nginx.
+Dockup is a command line interface tool and a Python package which allows to easily publish applications at a given path through docker containers and nginx.
 
 A Dockup package is a compressed file containing:
 
 - the content you want to publish: Python script, HTML file, ...
 - the `dockup.yml` configuration file which contains the following info
 
-    - `name` of the package, must be the same name as the archive containing it
+    - `name` of the package, must be the same name as the directory containing it
     - `path` at which the package will be accessible. For example `/app1` for `website.com/app1` 
     - `type` of the package. For example, `website`, `flet` application
 - optional: `Dockerfile` and `nginx.conf` in case customization is needed
